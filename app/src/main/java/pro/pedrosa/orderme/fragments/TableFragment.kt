@@ -35,6 +35,8 @@ class TableFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
         if(arguments!=null) {
             table = arguments.getSerializable(ARG_TABLE) as? Table
         }

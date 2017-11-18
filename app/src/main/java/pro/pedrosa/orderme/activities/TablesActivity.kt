@@ -13,7 +13,6 @@ import pro.pedrosa.orderme.model.Tables
 
 class TablesActivity : AppCompatActivity(), TableListFragment.OnTableSelectedListener{
 
-    var tables = Tables()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +20,7 @@ class TablesActivity : AppCompatActivity(), TableListFragment.OnTableSelectedLis
 
         // Comprobamos primero que no tenemos ya añadido el fragment a nuestra jerarquía
         if (fragmentManager.findFragmentById(R.id.table_list_fragment) == null) {
-            val fragment = TableListFragment.newInstance(tables)
+            val fragment = TableListFragment.newInstance(Tables())
             fragmentManager.beginTransaction()
                     .add(R.id.table_list_fragment,fragment)
                     .commit()
