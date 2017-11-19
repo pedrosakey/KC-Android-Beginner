@@ -42,6 +42,7 @@ class TablePagerActivity : AppCompatActivity() {
         toolbar.setLogo(R.mipmap.ic_launcher)
         setSupportActionBar(toolbar)
 
+
         //Parametro de la mesa a mostrar
         val tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
 
@@ -52,6 +53,7 @@ class TablePagerActivity : AppCompatActivity() {
             fragmentManager.beginTransaction()
                     .add(R.id.fragment_table_pager,fragment)
                     .commit()
+
         }
 
 

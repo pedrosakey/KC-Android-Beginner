@@ -2,7 +2,7 @@ package pro.pedrosa.orderme.model
 import java.io.Serializable
 
 
-class Tables : Serializable{
+object Tables : Serializable{
 
 
     private var tables : List<Table> =

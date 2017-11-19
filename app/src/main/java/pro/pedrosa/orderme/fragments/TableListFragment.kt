@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,26 +21,21 @@ class TableListFragment:Fragment() {
 
          private val ARG_TABLES = "ARG_TABLES"
 
-         fun newInstance(tables: Tables):TableListFragment {
-             val fragment = TableListFragment()
-             val args = Bundle()
-             args.putSerializable(ARG_TABLES, tables)
-             fragment.arguments = args
-             return fragment
-         }
+         fun newInstance():TableListFragment = TableListFragment()
+
      }
 
      lateinit var root: View
-     private var tables: Tables? = null
      private var onTableSelectedListener: OnTableSelectedListener? = null
 
 
 
     override fun onCreate(savedInstanceState:Bundle?) {
+        Log.v("TAG", "Table list fragemnt me creo")
+
     super.onCreate(savedInstanceState)
-        if(arguments!=null) {
-            tables = arguments.getSerializable(ARG_TABLES) as? Tables
-        }
+        setHasOptionsMenu(true)
+
     }
 
      override fun onCreateView(inflater:LayoutInflater?, container:ViewGroup?,
@@ -47,13 +43,13 @@ class TableListFragment:Fragment() {
             if(inflater != null){
                 root = inflater.inflate(R.layout.fragment_table_list,container,false)
                 val list = root.findViewById<ListView>(R.id.table_list)
-                val adapter = ArrayAdapter<Table>(activity, android.R.layout.simple_list_item_1, tables?.toArray())
+                val adapter = ArrayAdapter<Table>(activity, android.R.layout.simple_list_item_1, Tables.toArray())
                 list.adapter = adapter
 
                 // Nos enteramos de que se ha pulsado un elemento de la lista así:
                 list.setOnItemClickListener { parent, view, position, id ->
                     // Aviso al listener
-                    onTableSelectedListener?.onTableSelected(tables?.get(position), position)
+                    onTableSelectedListener?.onTableSelected(Tables.get(position), position)
                 }
             }
 
@@ -85,6 +81,12 @@ class TableListFragment:Fragment() {
 
     interface OnTableSelectedListener {
         fun onTableSelected(table: Table?, position: Int)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.v("TAG", "Table list fragemnt me destruyo")
+
     }
 
 
