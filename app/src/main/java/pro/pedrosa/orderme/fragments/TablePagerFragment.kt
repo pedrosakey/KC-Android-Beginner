@@ -118,6 +118,8 @@ class TablePagerFragment : Fragment() {
 
     }
 
+    fun getPosition() = pager.currentItem
+
     override fun onDestroy() {
         super.onDestroy()
 

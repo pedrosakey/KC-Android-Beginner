@@ -22,7 +22,6 @@ class TablesActivity : AppCompatActivity(), TableListFragment.OnTableSelectedLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        //TODO No destruir los fragments mejorar: Recuperar el fragment que me interesa
         var bundle : Bundle? = null
         super.onCreate(bundle)
 

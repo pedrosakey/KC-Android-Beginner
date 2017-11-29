@@ -31,7 +31,7 @@ class TableListFragment:Fragment() {
 
 
     override fun onCreate(savedInstanceState:Bundle?) {
-        Log.v("TAG", "Table list fragemnt me creo")
+        Log.v("TAG", "Table list fragment me creo")
 
     super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
