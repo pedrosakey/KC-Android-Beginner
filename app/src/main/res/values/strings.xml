@@ -7,4 +7,5 @@
     <string name="previous">Anterior</string>
     <string name="next">Siguiente</string>
     <string name="add_dishes_button">Add</string>
+    <string name="dish_image_view_description">Dish Image View</string>
 </resources>
