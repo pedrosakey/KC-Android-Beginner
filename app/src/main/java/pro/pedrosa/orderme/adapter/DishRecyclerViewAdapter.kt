@@ -1,13 +1,16 @@
 package pro.pedrosa.orderme.adapter
 
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import pro.pedrosa.orderme.model.Dish
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
+import org.intellij.lang.annotations.JdkConstants
 import pro.pedrosa.orderme.R
+
 
 class DishRecyclerViewAdapter (val dish: List<Dish>) : RecyclerView.Adapter<DishRecyclerViewAdapter.DishViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DishViewHolder {
@@ -26,15 +29,23 @@ class DishRecyclerViewAdapter (val dish: List<Dish>) : RecyclerView.Adapter<Dish
         val name = itemView.findViewById<TextView>(R.id.dish_name)
         val dishImage = itemView.findViewById<ImageView>(R.id.dish_image)
         val price = itemView.findViewById<TextView>(R.id.dish_price)
-        val allergens = itemView.findViewById<TextView>(R.id.dish_allergens)
+        val allergens = itemView.findViewById<RecyclerView>(R.id.dish_allergens)
 
         fun bindDish( dish: Dish) {
+            // Contexto
+            val context = itemView.context
+
 
             // Actualizamos la vista con el modelo
             dishImage.setImageResource(dish.image)
             name.text = dish.name
             price.text = dish.price.toString()
-            allergens.text = dish.allergens.toString()
+
+            //Horizontal
+            allergens.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            allergens.itemAnimator = DefaultItemAnimator()
+
+            allergens.adapter = AllergenRecyclerViewAdapter(dish.allergensToResources())
 
         }
     }

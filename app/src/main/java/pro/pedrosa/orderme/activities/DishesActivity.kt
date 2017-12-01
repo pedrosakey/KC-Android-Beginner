@@ -66,11 +66,12 @@ class DishesActivity : AppCompatActivity() {
 
         val dishes : MutableList<Dish> = mutableListOf()
 
-        val dish1 = Dish(0,"Espinacas con queso de cabra",50,R.drawable.ensalada_espinacas_1,listOf("milk", "nuts"))
-        val dish2 = Dish(0,"Espinacas con queso de cabra",50,R.drawable.ensalada_espinacas_1,listOf("milk", "nuts"))
-        val dish3 = Dish(0,"Espinacas con queso de cabra",50,R.drawable.ensalada_espinacas_1,listOf("milk", "nuts"))
-        val dish4 = Dish(0,"Espinacas con queso de cabra",50,R.drawable.ensalada_espinacas_1,listOf("milk", "nuts"))
-        val dish5 = Dish(0,"Espinacas con queso de cabra",50,R.drawable.ensalada_espinacas_1,listOf("milk", "nuts"))
+        val dish1 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("milk04", "nuts05"))
+        val dish2 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("eggs02", "fish03","milk04", "nuts05","milk04", "nuts05","milk04", "nuts05","nuts05","milk04", "nuts05"))
+        val dish3 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("milk04", "nuts05"))
+        val dish4 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("milk04", "nuts05"))
+        val dish5 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("milk04", "nuts05"))
+
 
         dishes.add(dish1)
         dishes.add(dish2)
