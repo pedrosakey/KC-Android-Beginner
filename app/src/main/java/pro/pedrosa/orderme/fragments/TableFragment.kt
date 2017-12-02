@@ -16,6 +16,7 @@ import android.widget.TextView
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.activities.TablePagerActivity
 import pro.pedrosa.orderme.model.Dish
+import pro.pedrosa.orderme.model.Order
 import pro.pedrosa.orderme.model.Table
 
 class TableFragment : Fragment() {
@@ -58,13 +59,15 @@ class TableFragment : Fragment() {
             tableName.text = table?.name
 
             val list = root.findViewById<ListView>(R.id.dishes_table_fragment)
-            val adapter = ArrayAdapter<Dish>(activity, android.R.layout.simple_list_item_1, table?.dishes?.toTypedArray())
+            val adapter = ArrayAdapter<Order>(activity, android.R.layout.simple_list_item_1, table?.order?.toTypedArray())
             list.adapter = adapter
 
             // Nos han pulsado el boton
             val button = root.findViewById<Button>(R.id.button)
             button.setOnClickListener {
-                onClickAddButtonListenener?.onClickAddButton()
+                onClickAddButtonListenener?.onClickAddButton(table)
+                val adapter = ArrayAdapter<Order>(activity, android.R.layout.simple_list_item_1, table?.order?.toTypedArray())
+                list.adapter = adapter
             }
 
 
@@ -102,7 +105,7 @@ class TableFragment : Fragment() {
     }
 
     interface OnClickAddButtonListenener {
-        fun onClickAddButton()
+        fun onClickAddButton(table: Table?)
     }
 
 

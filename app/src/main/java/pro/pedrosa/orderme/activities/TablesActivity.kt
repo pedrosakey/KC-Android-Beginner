@@ -19,7 +19,6 @@ class TablesActivity : AppCompatActivity(), TableListFragment.OnTableSelectedLis
 
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
 
         var bundle : Bundle? = null
@@ -68,18 +67,4 @@ class TablesActivity : AppCompatActivity(), TableListFragment.OnTableSelectedLis
     }
 
 
-
-    // Descargamos datos de los platos
-    private fun downloadDishes() : List<Dish> {
-
-        val dishes : MutableList<Dish> = mutableListOf()
-
-        val dish1 = Dish("Arroz con bogavante")
-        val dish2 = Dish("Solomillo a la pimienta")
-
-        dishes.add(dish1)
-        dishes.add(dish2)
-
-        return dishes
-    }
 }

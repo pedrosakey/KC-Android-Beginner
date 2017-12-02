@@ -7,15 +7,14 @@ object Tables : Serializable{
 
     private var tables : List<Table> =
         listOf(
-        Table("Mesa 1", mutableListOf(Dish("Arroz con bogavante"), Dish("Ensalada"))),
-        Table("Mesa 2", mutableListOf(Dish("Mero"))),
-        Table("Mesa 3", mutableListOf(Dish("Sushi"))),
+        Table("Mesa 1", mutableListOf(Order(Dish("Ensalada con espinacas"),2))),
+        Table("Mesa 2",  mutableListOf(Order(Dish("Rabas"),2))),
+        Table("Mesa 3",  mutableListOf(Order(Dish("Ensalada mixta"),2))),
         Table("Mesa 4")
         )
 
     fun toArray() = tables.toTypedArray()
 
-    //    fun getCity(index: Int) = cities[index]
     operator fun get(i: Int) = tables[i]
 
     val count

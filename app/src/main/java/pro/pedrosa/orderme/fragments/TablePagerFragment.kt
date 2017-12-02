@@ -35,7 +35,7 @@ class TablePagerFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.v("TAG", "Table Pager fragemnt me creo")
+        Log.v("TAG", "Table Pager fragmentt me creo")
 
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -57,6 +57,7 @@ class TablePagerFragment : Fragment() {
                 override fun getCount() = Tables.count
 
                 override fun getPageTitle(position: Int): CharSequence = Tables[position].name
+
             }
 
             pager.adapter = adapter

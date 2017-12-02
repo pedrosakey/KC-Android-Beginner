@@ -16,6 +16,7 @@ import pro.pedrosa.orderme.fragments.TableFragment
 import pro.pedrosa.orderme.fragments.TableListFragment
 import pro.pedrosa.orderme.fragments.TablePagerFragment
 import pro.pedrosa.orderme.model.Dish
+import pro.pedrosa.orderme.model.Order
 import pro.pedrosa.orderme.model.Table
 import pro.pedrosa.orderme.model.Tables
 
@@ -61,12 +62,15 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
 
     }
 
-    override fun onClickAddButton() {
-        //Obtengo la referencia la fragmento y le paso la posicion
-        val fragmentPager = fragmentManager.findFragmentById(R.id.fragment_table_pager) as? TablePagerFragment
-        if (fragmentPager != null) {
-            startActivity(DishesActivity.intent(this, fragmentPager.getPosition()))
-        }
+    override fun onClickAddButton(table: Table? ) {
+//        //Obtengo la referencia la fragmento y le paso la posicion
+//        val fragmentPager = fragmentManager.findFragmentById(R.id.fragment_table_pager) as? TablePagerFragment
+//        if (fragmentPager != null) {
+//            startActivity(DishesActivity.intent(this, fragmentPager.getPosition()))
+//        }
+
+       var orderToJoin = mutableListOf(Order(Dish("Ensalada con espinacas"),2))
+        table?.joinOrder(orderToJoin)
 
     }
 
