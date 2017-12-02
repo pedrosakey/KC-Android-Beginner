@@ -1,5 +1,6 @@
 package pro.pedrosa.orderme.activities
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -9,15 +10,28 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.widget.TextView
+import android.widget.ViewSwitcher
+import org.json.JSONObject
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.adapter.DishRecyclerViewAdapter
 import pro.pedrosa.orderme.fragments.TableFragment
 import pro.pedrosa.orderme.model.Dish
 import pro.pedrosa.orderme.model.Table
+import java.net.URL
+import java.util.*
+import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.android.UI
+import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.coroutines.experimental.bg
+import kotlin.collections.LinkedHashMap
+
 
 class DishesActivity : AppCompatActivity() {
 
-
+    enum class VIEW_INDEX(val index: Int) {
+        LOADING(0),
+        DISH(1)
+    }
 
     companion object {
         val EXTRA_TABLE_INDEX = "EXTRA_TABLE_INDEX"
@@ -31,12 +45,25 @@ class DishesActivity : AppCompatActivity() {
     }
 
     lateinit var dishList: RecyclerView
+    lateinit var viewSwitcher: ViewSwitcher
 
-    var dish : List<Dish> = downloadDishes()
+    var dishes : List<Dish>? = null
+    set(value){
+        field = value
+        if(value!=null) {
+            dishList.adapter = DishRecyclerViewAdapter(value)
+            viewSwitcher.displayedChild = VIEW_INDEX.DISH.index
+
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dishes)
+
+        viewSwitcher = findViewById(R.id.view_switcher)
+        viewSwitcher.setInAnimation(this, android.R.anim.fade_in)
+        viewSwitcher.setOutAnimation(this, android.R.anim.fade_out)
 
         // Configuramos la Toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar_dishes)
@@ -54,32 +81,93 @@ class DishesActivity : AppCompatActivity() {
         dishList.itemAnimator = DefaultItemAnimator()
 
         // 4) Por último, un RecylerView necesita un adapter
-        dishList.adapter = DishRecyclerViewAdapter(dish)
-
-
+        // set(value)
+        updateDishes()
 
 
     }
 
+    private fun updateDishes() {
+        viewSwitcher.displayedChild = VIEW_INDEX.LOADING.index
+        async(UI) {
+            val newDishes: Deferred<List<Dish>?> = bg {downloadDishes()}
+
+            val downloadedDishes = newDishes.await()
+
+            if(downloadedDishes!= null) {
+                dishes = downloadedDishes
+            } else {
+                // Ha habido algún tipo de error, se lo decimos al usuario con un diálogo
+                AlertDialog.Builder(this@DishesActivity)
+                        .setTitle("Error")
+                        .setMessage("No me pude descargar la información")
+                        .setPositiveButton("Reintentar", { dialog, _ ->
+                            dialog.dismiss()
+                            updateDishes()
+                        })
+                        .setNegativeButton("Salir", { _, _ -> finish() })
+                        .show()
+            }
+        }
+    }
+
+
+
     // Descargamos datos de los platos
-    private fun downloadDishes() : List<Dish> {
+    private fun downloadDishes() : List<Dish>? {
+        try {
+        // Simulamos un retardo
+        Thread.sleep(1000)
 
-        val dishes : MutableList<Dish> = mutableListOf()
+            val url = URL("http://www.mocky.io/v2/5a22df4d2f0000be0d5ec661")
+            val jsonString = Scanner(url.openStream(), "UTF-8").useDelimiter("\\A").next()
 
-        val dish1 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("milk04", "nuts05"))
-        val dish2 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("eggs02", "fish03","milk04", "nuts05","milk04", "nuts05","milk04", "nuts05","nuts05","milk04", "nuts05"))
-        val dish3 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("milk04", "nuts05"))
-        val dish4 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("milk04", "nuts05"))
-        val dish5 = Dish(0,"Espinacas con queso de cabra",50, "Deliciosas espinacas",R.drawable.ensalada_espinacas_1,listOf("milk04", "nuts05"))
+            // Analizamos los datos que nos acabamos de descargar
+            val jsonRoot = JSONObject(jsonString)
+            val list = jsonRoot.getJSONArray("list")
 
+            // Creamos la lista a devolver
+            val dishList = mutableListOf<Dish>()
 
-        dishes.add(dish1)
-        dishes.add(dish2)
-        dishes.add(dish3)
-        dishes.add(dish4)
-        dishes.add(dish5)
+            for (dishIndex in 0 until list.length()) {
+                val dish = list.getJSONObject(dishIndex)
+                val id = dish.getInt("id").toInt()
+                val name = dish.getString("name").toString()
+                val description = dish.get("description").toString()
+                val price = dish.getInt("price").toInt()
+                val image = dish.getString("image").toString()
 
-        return dishes
+                val allergens = dish.getJSONArray("allergens")
+
+                var allergenToList = mutableListOf<String>()
+
+                for( i in 0..(allergens.length() - 1) ) {
+                    val a = allergens.get(i)
+                    allergenToList.add(a as String)
+                }
+
+                val imageToInt = when (id) {
+                    1 -> R.drawable.ensalada_espinacas_1
+                    2 -> R.drawable.ensalada_mixta_2
+                    3 -> R.drawable.ensalada_palmitos_3
+                    4 -> R.drawable.esparrago_navarra_4
+                    5 -> R.drawable.revuelto_ajetes_5
+                    6 -> R.drawable.idiazabal_6
+                    7 -> R.drawable.bravas_7
+                    8 -> R.drawable.rabas_8
+                    9 -> R.drawable.fritos_variados_9
+                    10 -> R.drawable.sopa_pollo_10
+                    else -> R.drawable.ensalada_espinacas_1
+                }
+
+                dishList.add(Dish(id, name, price, description, imageToInt, allergenToList))
+
+            }
+            return dishList
+        }catch (ex: Exception) {
+            ex.printStackTrace()
+        }
+        return null
     }
 
 }

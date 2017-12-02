@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     tools:listitem="@layout/content_allergen"
                     />
-            
+
         </LinearLayout>
 
     </RelativeLayout>

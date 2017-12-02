@@ -21,16 +21,29 @@
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
 
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" >
 
+        <ViewSwitcher xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/view_switcher"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        <ProgressBar
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/default_margin"
+            android:indeterminate="true" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/dishes_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
+        </ViewSwitcher>
     </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>
