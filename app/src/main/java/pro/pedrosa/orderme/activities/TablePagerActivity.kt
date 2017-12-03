@@ -25,6 +25,8 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
 
     companion object {
         val EXTRA_TABLE_INDEX = "EXTRA_TABLE_INDEX"
+        private val REQUEST_CODE_DISHES = 1
+
 
         fun intent(context: Context, tableIndex: Int) : Intent {
             val intent = Intent(context, TablePagerActivity::class.java)
@@ -63,15 +65,17 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
     }
 
     override fun onClickAddButton(table: Table? ) {
-//        //Obtengo la referencia la fragmento y le paso la posicion
-//        val fragmentPager = fragmentManager.findFragmentById(R.id.fragment_table_pager) as? TablePagerFragment
-//        if (fragmentPager != null) {
-//            startActivity(DishesActivity.intent(this, fragmentPager.getPosition()))
-//        }
+        //Obtengo la referencia la fragmento y le paso la posicion
+        val fragmentPager = fragmentManager.findFragmentById(R.id.fragment_table_pager) as? TablePagerFragment
+        if (fragmentPager != null) {
+            startActivityForResult(DishesActivity.intent(this,fragmentPager.getPosition()), REQUEST_CODE_DISHES)
+        }
 
-       var orderToJoin = mutableListOf(Order(Dish("Ensalada con espinacas"),2))
-        table?.joinOrder(orderToJoin)
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
 

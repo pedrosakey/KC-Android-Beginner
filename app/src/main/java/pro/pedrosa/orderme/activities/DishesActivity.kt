@@ -1,5 +1,6 @@
 package pro.pedrosa.orderme.activities
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -9,8 +10,11 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.ViewSwitcher
+import kotlinx.android.synthetic.main.activity_dishes.*
 import org.json.JSONObject
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.adapter.DishRecyclerViewAdapter
@@ -23,6 +27,8 @@ import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
+import pro.pedrosa.orderme.model.Order
+import pro.pedrosa.orderme.model.Tables
 import kotlin.collections.LinkedHashMap
 
 
@@ -35,6 +41,7 @@ class DishesActivity : AppCompatActivity() {
 
     companion object {
         val EXTRA_TABLE_INDEX = "EXTRA_TABLE_INDEX"
+        val EXTRA_RESULT = "EXTRA_RESULT"
 
         fun intent(context: Context, tableIndex: Int) : Intent {
             val intent = Intent(context, DishesActivity::class.java)
@@ -47,11 +54,45 @@ class DishesActivity : AppCompatActivity() {
     lateinit var dishList: RecyclerView
     lateinit var viewSwitcher: ViewSwitcher
 
+
+    var dishSelected : List<Dish>? = null
     var dishes : List<Dish>? = null
     set(value){
         field = value
         if(value!=null) {
-            dishList.adapter = DishRecyclerViewAdapter(value)
+            //Creamos el adapter
+            val adapter = DishRecyclerViewAdapter(value)
+
+            // Hacemos click en un elemento
+            adapter.onClickListener = View.OnClickListener { view ->
+                // Averiguamos qué índice del ViewHolder es el que ha provocado esta llamada
+                val position = dishes_recyclerview.getChildAdapterPosition(view)
+
+                /* Mostramos un mensajillo con el número pulsado
+                Toast.makeText(this, "Han pulsado la posicion ${position}", Toast.LENGTH_SHORT)
+                        .show()*/
+
+                // StartAcivityForResult cuando click en un dish
+                var tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
+
+                var orderToJoin = mutableListOf(Order(Dish("Ensalada con espinacas"),2))
+                Tables[tableIndex]?.joinOrder(orderToJoin)
+
+                val resultIntent = Intent()
+                resultIntent.putExtra(EXTRA_RESULT, "Añadimos dish")
+
+                // Indicamos que resultIntent es lo que recibirá la actividad anterior
+                setResult(Activity.RESULT_OK, resultIntent)
+
+                // Si queremos, que es lo más habitual, finalizamos esta actividad
+                finish()
+
+            }
+
+            // Le decimos su adapter
+            dishes_recyclerview.adapter = adapter
+
+           // dishList.adapter = DishRecyclerViewAdapter(value)
             viewSwitcher.displayedChild = VIEW_INDEX.DISH.index
 
         }
@@ -61,6 +102,7 @@ class DishesActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dishes)
 
+       //ViewSwitcher
         viewSwitcher = findViewById(R.id.view_switcher)
         viewSwitcher.setInAnimation(this, android.R.anim.fade_in)
         viewSwitcher.setOutAnimation(this, android.R.anim.fade_out)
@@ -71,7 +113,7 @@ class DishesActivity : AppCompatActivity() {
         toolbar.setTitle("Add Dishes")
         setSupportActionBar(toolbar)
 
-        // Accdemos al RecyclerView
+        // Accedemos al RecyclerView
         dishList = findViewById(R.id.dishes_recyclerview)
 
         // 2) Le decimos cómo debe visualizarse el RecyclerView (su LayoutManager)
@@ -82,8 +124,14 @@ class DishesActivity : AppCompatActivity() {
 
         // 4) Por último, un RecylerView necesita un adapter
         // set(value)
-        updateDishes()
 
+        // Le decimos cuando pulsamos un elemento del adapter
+
+
+
+
+
+        updateDishes()
 
     }
 

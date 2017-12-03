@@ -1,6 +1,9 @@
 package pro.pedrosa.orderme.model
 
-data class Order (val dish: Dish, var number: Int) {
+import android.os.Parcelable
+import java.io.Serializable
+
+data class Order (val dish: Dish, var number: Int) :Serializable{
     override fun toString(): String = dish.name + " X " + number
 
     override fun equals(other: Any?): Boolean {

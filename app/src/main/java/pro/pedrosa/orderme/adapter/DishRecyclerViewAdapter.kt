@@ -13,8 +13,15 @@ import pro.pedrosa.orderme.R
 
 
 class DishRecyclerViewAdapter (val dish: List<Dish>) : RecyclerView.Adapter<DishRecyclerViewAdapter.DishViewHolder>() {
+
+    var onClickListener: View.OnClickListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): DishViewHolder {
         val view = LayoutInflater.from(parent?.context).inflate(R.layout.content_dish, parent, false)
+
+        // Le decimos a la vista de este ViewHolder a quién llamar cuando se le pulse
+        view.setOnClickListener(onClickListener)
+
         return DishViewHolder(view)
     }
 
@@ -48,5 +55,7 @@ class DishRecyclerViewAdapter (val dish: List<Dish>) : RecyclerView.Adapter<Dish
             allergens.adapter = AllergenRecyclerViewAdapter(dish.allergensToResources())
 
         }
+
+
     }
 }
