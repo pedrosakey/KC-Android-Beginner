@@ -4,12 +4,25 @@ import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
 import android.support.v13.app.FragmentPagerAdapter
+import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.*
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.model.Tables
+import android.support.v4.view.PagerAdapter.POSITION_NONE
+import android.support.v4.view.PagerAdapter.POSITION_NONE
+import android.support.v4.view.PagerAdapter.POSITION_NONE
+import android.support.v4.view.PagerAdapter.POSITION_NONE
+
+
+
+
+
+
+
+
 
 
 class TablePagerFragment : Fragment() {
@@ -35,7 +48,7 @@ class TablePagerFragment : Fragment() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.v("TAG", "Table Pager fragmentt me creo")
+        Log.v("TAG", "Table Pager fragmett me creo")
 
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
@@ -57,6 +70,10 @@ class TablePagerFragment : Fragment() {
                 override fun getCount() = Tables.count
 
                 override fun getPageTitle(position: Int): CharSequence = Tables[position].name
+
+                override fun getItemPosition(`object`: Any?): Int {
+                    return POSITION_NONE
+                }
 
             }
 
@@ -111,6 +128,7 @@ class TablePagerFragment : Fragment() {
         if (activity is AppCompatActivity) {
             val supportActionBar = (activity as? AppCompatActivity)?.supportActionBar
             supportActionBar?.title = Tables[position].name
+
         }
     }
 
@@ -121,12 +139,6 @@ class TablePagerFragment : Fragment() {
 
     fun getPosition() = pager.currentItem
 
-    override fun onDestroy() {
-        super.onDestroy()
-
-        Log.v("TAG", "Table pager  fragemnt me destruyo")
-
-    }
 
 
 }

@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import kotlinx.android.synthetic.*
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.fragments.TableFragment
 import pro.pedrosa.orderme.fragments.TableListFragment
@@ -76,6 +78,9 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        //Obtengo la referencia la fragmento y le paso la posicion
+
+
     }
 
 

@@ -84,7 +84,7 @@ class DishesActivity : AppCompatActivity() {
                 // Indicamos que resultIntent es lo que recibirá la actividad anterior
                 setResult(Activity.RESULT_OK, resultIntent)
 
-                // Si queremos, que es lo más habitual, finalizamos esta actividad
+                // Finalizamos esta actividad
                 finish()
 
             }
