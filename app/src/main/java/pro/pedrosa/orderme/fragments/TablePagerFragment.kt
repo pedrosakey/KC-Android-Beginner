@@ -71,10 +71,7 @@ class TablePagerFragment : Fragment() {
 
                 override fun getPageTitle(position: Int): CharSequence = Tables[position].name
 
-                override fun getItemPosition(`object`: Any?): Int {
-                    return POSITION_NONE
-                }
-
+                override fun getItemPosition(`object`: Any?) = POSITION_NONE
             }
 
             pager.adapter = adapter
@@ -135,9 +132,13 @@ class TablePagerFragment : Fragment() {
     fun moveToTable(position: Int) {
         pager.currentItem = position
 
+        pager.adapter.notifyDataSetChanged()
+
     }
 
     fun getPosition() = pager.currentItem
+
+    fun updateTableFragment() = pager.adapter.notifyDataSetChanged()
 
 
 

@@ -58,17 +58,16 @@ class TableFragment : Fragment() {
             val tableName = root.findViewById<TextView>(R.id.table_name)
             tableName.text = table?.name
 
-            val list = root.findViewById<ListView>(R.id.dishes_table_fragment)
-            val adapter = ArrayAdapter<Order>(activity, android.R.layout.simple_list_item_1, table?.order?.toTypedArray())
-            list.adapter = adapter
+           this.setTables()
 
             // Nos han pulsado el boton
             val button = root.findViewById<Button>(R.id.button)
             button.setOnClickListener {
                 onClickAddButtonListenener?.onClickAddButton(table)
-                val adapter = ArrayAdapter<Order>(activity, android.R.layout.simple_list_item_1, table?.order?.toTypedArray())
-                list.adapter = adapter
+//                val adapter = ArrayAdapter<Order>(activity, android.R.layout.simple_list_item_1, table?.order?.toTypedArray())
+//                list.adapter = adapter
             }
+
 
 
         }
@@ -76,6 +75,14 @@ class TableFragment : Fragment() {
 
 
         return root
+    }
+
+    fun setTables() {
+        val list = root.findViewById<ListView>(R.id.dishes_table_fragment)
+        val adapter = ArrayAdapter<Order>(activity, android.R.layout.simple_list_item_1, table?.order?.toTypedArray())
+        adapter.notifyDataSetChanged()
+        list.adapter = adapter
+
     }
 
     override fun onAttach(context: Context?) {
