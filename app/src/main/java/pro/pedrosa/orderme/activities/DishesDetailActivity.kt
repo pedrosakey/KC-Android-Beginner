@@ -1,14 +1,12 @@
 package pro.pedrosa.orderme.activities
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.model.Dishes
 import pro.pedrosa.orderme.model.Tables
@@ -37,9 +35,6 @@ class DishesDetailActivity : AppCompatActivity() {
         toolbar.setTitle("Dish to Order")
         setSupportActionBar(toolbar)
 
-        // Eliminamos foco del edittext
-        val editText = findViewById<EditText>(R.id.edit_text)
-
         // Mostramos los campos segun la posición
         var dishId = intent.getIntExtra(DISH_ID, 0)
         var dish = Dishes.dishes[dishId]
@@ -53,6 +48,44 @@ class DishesDetailActivity : AppCompatActivity() {
         dishName.text = dish.name
         dishPrice.text = dish.price.toString()
         dishDescription.text = dish.description
+
+        // Button Cancel
+        var buttonCancel = findViewById<Button>(R.id.button_cancel)
+        buttonCancel.setOnClickListener { finish() }
+
+        // Button Save
+        var buttonSave = findViewById<Button>(R.id.button_save)
+        buttonSave.setOnClickListener {
+
+            // Add Dish
+
+            // Si queremos añadir mas productos o terminar
+            AlertDialog.Builder(this@DishesDetailActivity)
+                    .setMessage("Add more dishes?")
+                    .setPositiveButton("YES", { dialog, _ ->
+                        dialog.dismiss()
+                        finish()
+                    })
+                    .setNegativeButton("NO", { _, _ ->
+
+                        // StartAcivityForResult volver a las mesas
+                        /* var tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
+
+                         //Join orders
+                         var orderToJoin = mutableListOf(Order(Dish("Ensalada con espinacas"),2))
+                         Tables[tableIndex]?.joinOrder(orderToJoin)
+
+                         val resultIntent = Intent()
+                         resultIntent.putExtra(EXTRA_RESULT, "Añadimos dish")
+
+                         // Indicamos que resultIntent es lo que recibirá la actividad anterior
+                         setResult(Activity.RESULT_OK, resultIntent)
+
+                         // Finalizamos esta actividad
+                         finish()*/
+                        startActivity(TablePagerActivity.intent(this, 0)) })
+                    .show()
+        }
 
 
     }

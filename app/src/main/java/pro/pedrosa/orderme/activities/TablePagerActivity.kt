@@ -1,10 +1,13 @@
 package pro.pedrosa.orderme.activities
 
+import android.app.Activity
 import android.app.Fragment
 import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
+import android.support.design.widget.Snackbar
 import android.support.v13.app.FragmentPagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
@@ -13,6 +16,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import kotlinx.android.synthetic.*
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.fragments.TableFragment
@@ -79,9 +83,29 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         //Obtengo la referencia la fragmento y le paso la posicion
         val fragmentPager = fragmentManager.findFragmentById(R.id.fragment_table_pager) as? TablePagerFragment
         fragmentPager?.updateTableFragment()
+
+        // ResullCode, Toast OK - no OK
+        if (requestCode == REQUEST_CODE_DISHES) { // Comprobamos que volvemos de SecondActivity
+            if (resultCode == Activity.RESULT_OK) {
+                // Hacemos lo que tenga sentido sabiendo que nos han devuelto RESULT_OK
+
+
+
+            } else if (resultCode == Activity.RESULT_CANCELED) {
+                // Mostramos un snackbar con el error que me devuelve la actividad
+                Snackbar.make(findViewById(android.R.id.content)
+                        , "Network Error", Snackbar.LENGTH_LONG)
+                        .show()
+
+
+            }
+        }
+
+
 
 
 

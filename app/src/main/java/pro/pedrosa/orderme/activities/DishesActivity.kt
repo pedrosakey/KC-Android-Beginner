@@ -71,26 +71,6 @@ class DishesActivity : AppCompatActivity() {
                     startActivity(DishesDetailActivity.intent(this, position))
 
 
-                // Start activity Dishes -> (DishId) -> DishesDetail
-
-
-
-                // StartAcivityForResult volver a las mesas
-               /* var tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
-
-                //Join orders
-                var orderToJoin = mutableListOf(Order(Dish("Ensalada con espinacas"),2))
-                Tables[tableIndex]?.joinOrder(orderToJoin)
-
-                val resultIntent = Intent()
-                resultIntent.putExtra(EXTRA_RESULT, "Añadimos dish")
-
-                // Indicamos que resultIntent es lo que recibirá la actividad anterior
-                setResult(Activity.RESULT_OK, resultIntent)
-
-                // Finalizamos esta actividad
-                finish()*/
-
             }
 
             // Le decimos su adapter
@@ -147,6 +127,8 @@ class DishesActivity : AppCompatActivity() {
                 dishes = downloadedDishes
                 Dishes.totalDishes(downloadedDishes)
             } else {
+                var resultIntent = Intent ()
+                resultIntent.putExtra("ERR_MESSAGE", "Network Error")
                 // Ha habido algún tipo de error, se lo decimos al usuario con un diálogo
                 AlertDialog.Builder(this@DishesActivity)
                         .setTitle("Error")
@@ -155,7 +137,9 @@ class DishesActivity : AppCompatActivity() {
                             dialog.dismiss()
                             updateDishes()
                         })
-                        .setNegativeButton("Salir", { _, _ -> finish() })
+                        .setNegativeButton("Salir", { _, _ ->
+                            setResult(Activity.RESULT_CANCELED, resultIntent)
+                            finish() })
                         .show()
             }
         }
@@ -167,7 +151,6 @@ class DishesActivity : AppCompatActivity() {
     private fun downloadDishes() : List<Dish>? {
         try {
         // Simulamos un retardo
-        Thread.sleep(1000)
 
             val url = URL("http://www.mocky.io/v2/5a22df4d2f0000be0d5ec661")
             val jsonString = Scanner(url.openStream(), "UTF-8").useDelimiter("\\A").next()
