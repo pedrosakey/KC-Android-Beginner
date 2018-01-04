@@ -19,16 +19,13 @@ import org.json.JSONObject
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.adapter.DishRecyclerViewAdapter
 import pro.pedrosa.orderme.fragments.TableFragment
-import pro.pedrosa.orderme.model.Dish
-import pro.pedrosa.orderme.model.Table
 import java.net.URL
 import java.util.*
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
-import pro.pedrosa.orderme.model.Order
-import pro.pedrosa.orderme.model.Tables
+import pro.pedrosa.orderme.model.*
 import kotlin.collections.LinkedHashMap
 
 
@@ -68,13 +65,20 @@ class DishesActivity : AppCompatActivity() {
                 // Averiguamos qué índice del ViewHolder es el que ha provocado esta llamada
                 val position = dishes_recyclerview.getChildAdapterPosition(view)
 
-                /* Mostramos un mensajillo con el número pulsado
-                Toast.makeText(this, "Han pulsado la posicion ${position}", Toast.LENGTH_SHORT)
-                        .show()*/
+                    var dish = dishes?.get(position)
+                    var dishId = dish?.id ?: 0
+                // Pasamos la posicion mejorar con Id
+                    startActivity(DishesDetailActivity.intent(this, position))
 
-                // StartAcivityForResult cuando click en un dish
-                var tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
 
+                // Start activity Dishes -> (DishId) -> DishesDetail
+
+
+
+                // StartAcivityForResult volver a las mesas
+               /* var tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
+
+                //Join orders
                 var orderToJoin = mutableListOf(Order(Dish("Ensalada con espinacas"),2))
                 Tables[tableIndex]?.joinOrder(orderToJoin)
 
@@ -85,7 +89,7 @@ class DishesActivity : AppCompatActivity() {
                 setResult(Activity.RESULT_OK, resultIntent)
 
                 // Finalizamos esta actividad
-                finish()
+                finish()*/
 
             }
 
@@ -128,9 +132,6 @@ class DishesActivity : AppCompatActivity() {
         // Le decimos cuando pulsamos un elemento del adapter
 
 
-
-
-
         updateDishes()
 
     }
@@ -144,6 +145,7 @@ class DishesActivity : AppCompatActivity() {
 
             if(downloadedDishes!= null) {
                 dishes = downloadedDishes
+                Dishes.totalDishes(downloadedDishes)
             } else {
                 // Ha habido algún tipo de error, se lo decimos al usuario con un diálogo
                 AlertDialog.Builder(this@DishesActivity)
