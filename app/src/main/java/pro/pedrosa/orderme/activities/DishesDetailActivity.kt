@@ -8,13 +8,21 @@ import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import android.widget.*
 import pro.pedrosa.orderme.R
+import pro.pedrosa.orderme.model.Dish
 import pro.pedrosa.orderme.model.Dishes
+import pro.pedrosa.orderme.model.Order
 import pro.pedrosa.orderme.model.Tables
 
 class DishesDetailActivity : AppCompatActivity() {
 
     companion object {
         val DISH_ID = "DISH_ID"
+        val ADD_MORE = 3
+        val NO_ADD_MORE = 4
+        val EXTRA_RESULT_ADDED = "EXTRA_RESULT_ADDED"
+
+
+
 
 
         fun intent(context: Context, dishId: Int) : Intent {
@@ -56,37 +64,36 @@ class DishesDetailActivity : AppCompatActivity() {
         // Button Save
         var buttonSave = findViewById<Button>(R.id.button_save)
         buttonSave.setOnClickListener {
-
             // Add Dish
 
             // Si queremos añadir mas productos o terminar
             AlertDialog.Builder(this@DishesDetailActivity)
                     .setMessage("Add more dishes?")
                     .setPositiveButton("YES", { dialog, _ ->
-                        dialog.dismiss()
+                       // dialog.dismiss()
+                        setResult(ADD_MORE)
                         finish()
                     })
                     .setNegativeButton("NO", { _, _ ->
-
                         // StartAcivityForResult volver a las mesas
-                        /* var tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
+                        /* var tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)*/
 
                          //Join orders
-                         var orderToJoin = mutableListOf(Order(Dish("Ensalada con espinacas"),2))
-                         Tables[tableIndex]?.joinOrder(orderToJoin)
+                         var orderToJoin = mutableListOf(Order(dish,1))
+                         Tables[0]?.joinOrder(orderToJoin)
 
                          val resultIntent = Intent()
-                         resultIntent.putExtra(EXTRA_RESULT, "Añadimos dish")
+                         resultIntent.putExtra(EXTRA_RESULT_ADDED, "Añadimos dish")
 
                          // Indicamos que resultIntent es lo que recibirá la actividad anterior
-                         setResult(Activity.RESULT_OK, resultIntent)
+                         setResult(NO_ADD_MORE, resultIntent)
 
                          // Finalizamos esta actividad
-                         finish()*/
-                        startActivity(TablePagerActivity.intent(this, 0)) })
-                    .show()
+                         finish()
+
+                     }).show()
+
+
         }
-
-
     }
 }

@@ -39,6 +39,9 @@ class DishesActivity : AppCompatActivity() {
     companion object {
         val EXTRA_TABLE_INDEX = "EXTRA_TABLE_INDEX"
         val EXTRA_RESULT = "EXTRA_RESULT"
+        private val REQUEST_CODE_DISHES_DETAIL = 2
+        lateinit var dishCache: List<Dish>
+
 
         fun intent(context: Context, tableIndex: Int) : Intent {
             val intent = Intent(context, DishesActivity::class.java)
@@ -60,6 +63,8 @@ class DishesActivity : AppCompatActivity() {
             //Creamos el adapter
             val adapter = DishRecyclerViewAdapter(value)
 
+            //Caché
+            field = value
             // Hacemos click en un elemento
             adapter.onClickListener = View.OnClickListener { view ->
                 // Averiguamos qué índice del ViewHolder es el que ha provocado esta llamada
@@ -68,9 +73,8 @@ class DishesActivity : AppCompatActivity() {
                     var dish = dishes?.get(position)
                     var dishId = dish?.id ?: 0
                 // Pasamos la posicion mejorar con Id
-                    startActivity(DishesDetailActivity.intent(this, position))
-
-
+                // Añadimos el plato y si resultado OK añadimos mas
+                    startActivityForResult(DishesDetailActivity.intent(this, position), REQUEST_CODE_DISHES_DETAIL)
             }
 
             // Le decimos su adapter
@@ -114,6 +118,14 @@ class DishesActivity : AppCompatActivity() {
 
         updateDishes()
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if ( resultCode == DishesDetailActivity.NO_ADD_MORE) {
+            finish()
+        }
     }
 
     private fun updateDishes() {
