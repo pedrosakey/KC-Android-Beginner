@@ -17,6 +17,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import kotlinx.android.synthetic.*
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.fragments.TableFragment
@@ -95,10 +96,14 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
 
 
 
-            } else if (resultCode == Activity.RESULT_CANCELED) {
+            }else if (resultCode == DishesDetailActivity.NO_ADD_MORE) {
+                Toast.makeText(this,data?.getStringExtra(DishesDetailActivity.EXTRA_RESULT_ADDED), Toast.LENGTH_SHORT).show()
+
+            }
+            else if (resultCode == Activity.RESULT_CANCELED) {
                 // Mostramos un snackbar con el error que me devuelve la actividad
                 Snackbar.make(findViewById(android.R.id.content)
-                        , "Network Error", Snackbar.LENGTH_LONG)
+                        , "Network Error", Snackbar.LENGTH_SHORT)
                         .show()
 
 

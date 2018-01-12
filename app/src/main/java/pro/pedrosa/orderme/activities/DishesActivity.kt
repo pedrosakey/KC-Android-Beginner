@@ -123,7 +123,8 @@ class DishesActivity : AppCompatActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if ( resultCode == DishesDetailActivity.NO_ADD_MORE) {
+        if (resultCode == DishesDetailActivity.NO_ADD_MORE) {
+            setResult(resultCode,data)
             finish()
         }
     }
@@ -131,15 +132,14 @@ class DishesActivity : AppCompatActivity() {
     private fun updateDishes() {
         viewSwitcher.displayedChild = VIEW_INDEX.LOADING.index
         async(UI) {
-            val newDishes: Deferred<List<Dish>?> = bg {downloadDishes()}
+            try {
+                val newDishes: Deferred<List<Dish>?> = bg { downloadDishes() }
+                val downloadedDishes = newDishes.await()
+                Dishes.totalDishes(downloadedDishes!!)
 
-            val downloadedDishes = newDishes.await()
-
-            if(downloadedDishes!= null) {
-                dishes = downloadedDishes
-                Dishes.totalDishes(downloadedDishes)
-            } else {
-                var resultIntent = Intent ()
+            } catch (ex : Exception) {
+                ex.printStackTrace()
+                var resultIntent = Intent()
                 resultIntent.putExtra("ERR_MESSAGE", "Network Error")
                 // Ha habido algún tipo de error, se lo decimos al usuario con un diálogo
                 AlertDialog.Builder(this@DishesActivity)
@@ -151,7 +151,8 @@ class DishesActivity : AppCompatActivity() {
                         })
                         .setNegativeButton("Salir", { _, _ ->
                             setResult(Activity.RESULT_CANCELED, resultIntent)
-                            finish() })
+                            finish()
+                        })
                         .show()
             }
         }
@@ -160,8 +161,9 @@ class DishesActivity : AppCompatActivity() {
 
 
     // Descargamos datos de los platos
+    @Throws(Exception::class)
     private fun downloadDishes() : List<Dish>? {
-        try {
+
         // Simulamos un retardo
 
             val url = URL("http://www.mocky.io/v2/5a22df4d2f0000be0d5ec661")
@@ -209,10 +211,6 @@ class DishesActivity : AppCompatActivity() {
 
             }
             return dishList
-        }catch (ex: Exception) {
-            ex.printStackTrace()
-        }
-        return null
     }
 
 }

@@ -83,7 +83,7 @@ class DishesDetailActivity : AppCompatActivity() {
                          Tables[0]?.joinOrder(orderToJoin)
 
                          val resultIntent = Intent()
-                         resultIntent.putExtra(EXTRA_RESULT_ADDED, "Añadimos dish")
+                         resultIntent.putExtra(EXTRA_RESULT_ADDED, "Dish Added")
 
                          // Indicamos que resultIntent es lo que recibirá la actividad anterior
                          setResult(NO_ADD_MORE, resultIntent)
