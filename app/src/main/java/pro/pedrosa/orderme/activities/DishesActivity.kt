@@ -38,8 +38,11 @@ class DishesActivity : AppCompatActivity() {
 
     companion object {
         val EXTRA_TABLE_INDEX = "EXTRA_TABLE_INDEX"
-        val EXTRA_RESULT = "EXTRA_RESULT"
+        val EXTRA_ERR_MSG = "EXTRA_ERR_MSG"
+
+        //Codes
         private val REQUEST_CODE_DISHES_DETAIL = 2
+        val ERR_DOWNLOAD = 5
         lateinit var dishCache: List<Dish>
 
 
@@ -133,14 +136,16 @@ class DishesActivity : AppCompatActivity() {
         viewSwitcher.displayedChild = VIEW_INDEX.LOADING.index
         async(UI) {
             try {
-                val newDishes: Deferred<List<Dish>?> = bg { downloadDishes() }
+                val newDishes: Deferred<List<Dish>> = bg { downloadDishes() }
                 val downloadedDishes = newDishes.await()
-                Dishes.totalDishes(downloadedDishes!!)
+                // Data is here!!
+                dishes = downloadedDishes
+                Dishes.totalDishes(downloadedDishes)
 
             } catch (ex : Exception) {
                 ex.printStackTrace()
                 var resultIntent = Intent()
-                resultIntent.putExtra("ERR_MESSAGE", "Network Error")
+                resultIntent.putExtra(EXTRA_ERR_MSG, ex.localizedMessage)
                 // Ha habido algún tipo de error, se lo decimos al usuario con un diálogo
                 AlertDialog.Builder(this@DishesActivity)
                         .setTitle("Error")
@@ -150,7 +155,7 @@ class DishesActivity : AppCompatActivity() {
                             updateDishes()
                         })
                         .setNegativeButton("Salir", { _, _ ->
-                            setResult(Activity.RESULT_CANCELED, resultIntent)
+                            setResult(ERR_DOWNLOAD, resultIntent)
                             finish()
                         })
                         .show()
@@ -162,7 +167,7 @@ class DishesActivity : AppCompatActivity() {
 
     // Descargamos datos de los platos
     @Throws(Exception::class)
-    private fun downloadDishes() : List<Dish>? {
+    private fun downloadDishes() : List<Dish> {
 
         // Simulamos un retardo
 

@@ -100,10 +100,11 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
                 Toast.makeText(this,data?.getStringExtra(DishesDetailActivity.EXTRA_RESULT_ADDED), Toast.LENGTH_SHORT).show()
 
             }
-            else if (resultCode == Activity.RESULT_CANCELED) {
+            else if (resultCode == DishesActivity.ERR_DOWNLOAD) {
                 // Mostramos un snackbar con el error que me devuelve la actividad
+                val msg : String = data?.getStringExtra(DishesActivity.EXTRA_ERR_MSG) ?: "Error"
                 Snackbar.make(findViewById(android.R.id.content)
-                        , "Network Error", Snackbar.LENGTH_SHORT)
+                        , msg , Snackbar.LENGTH_LONG)
                         .show()
 
 

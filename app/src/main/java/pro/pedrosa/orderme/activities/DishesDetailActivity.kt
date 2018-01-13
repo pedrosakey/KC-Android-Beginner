@@ -17,11 +17,11 @@ class DishesDetailActivity : AppCompatActivity() {
 
     companion object {
         val DISH_ID = "DISH_ID"
-        val ADD_MORE = 3
-        val NO_ADD_MORE = 4
         val EXTRA_RESULT_ADDED = "EXTRA_RESULT_ADDED"
 
-
+        //Codes
+        val ADD_MORE = 3
+        val NO_ADD_MORE = 4
 
 
 
