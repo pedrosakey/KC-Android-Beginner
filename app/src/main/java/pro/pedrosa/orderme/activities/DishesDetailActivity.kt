@@ -18,6 +18,7 @@ class DishesDetailActivity : AppCompatActivity() {
     companion object {
         val DISH_ID = "DISH_ID"
         val EXTRA_RESULT_ADDED = "EXTRA_RESULT_ADDED"
+        val EXTRA_TABLE_INDEX = "EXTRA_TABLE_INDEX"
 
         //Codes
         val ADD_MORE = 3
@@ -25,15 +26,19 @@ class DishesDetailActivity : AppCompatActivity() {
 
 
 
-        fun intent(context: Context, dishId: Int) : Intent {
+        fun intent(context: Context, dishId: Int, tableIndex: Int) : Intent {
             val intent = Intent(context, DishesDetailActivity::class.java)
             intent.putExtra(DISH_ID, dishId)
+            intent.putExtra(EXTRA_TABLE_INDEX, tableIndex)
             return intent
         }
 
     }
 
+    var tableIndex: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dishes_detail)
 
@@ -43,6 +48,9 @@ class DishesDetailActivity : AppCompatActivity() {
         toolbar.setTitle("Dish to Order")
         setSupportActionBar(toolbar)
 
+        // Mesa
+        tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
+        
         // Mostramos los campos segun la posición
         var dishId = intent.getIntExtra(DISH_ID, 0)
         var dish = Dishes.dishes[dishId]
@@ -71,16 +79,20 @@ class DishesDetailActivity : AppCompatActivity() {
                     .setMessage("Add more dishes?")
                     .setPositiveButton("YES", { dialog, _ ->
                        // dialog.dismiss()
+                        // Add more
+                        //Join orders
+                        var orderToJoin = mutableListOf(Order(dish,1))
+                        Tables[tableIndex]?.joinOrder(orderToJoin)
+
                         setResult(ADD_MORE)
                         finish()
                     })
                     .setNegativeButton("NO", { _, _ ->
                         // StartAcivityForResult volver a las mesas
-                        /* var tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)*/
 
-                         //Join orders
+                        //Join orders
                          var orderToJoin = mutableListOf(Order(dish,1))
-                         Tables[0]?.joinOrder(orderToJoin)
+                         Tables[tableIndex]?.joinOrder(orderToJoin)
 
                          val resultIntent = Intent()
                          resultIntent.putExtra(EXTRA_RESULT_ADDED, "Dish Added")

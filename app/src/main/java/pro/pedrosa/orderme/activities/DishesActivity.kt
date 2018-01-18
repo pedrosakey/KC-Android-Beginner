@@ -76,8 +76,9 @@ class DishesActivity : AppCompatActivity() {
                     var dish = dishes?.get(position)
                     var dishId = dish?.id ?: 0
                 // Pasamos la posicion mejorar con Id
-                // Añadimos el plato y si resultado OK añadimos mas
-                    startActivityForResult(DishesDetailActivity.intent(this, position), REQUEST_CODE_DISHES_DETAIL)
+                // Añadimos el plato y si resultado OK añadimos mas / pasamos la mesa
+                val tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
+                    startActivityForResult(DishesDetailActivity.intent(this, position, tableIndex ), REQUEST_CODE_DISHES_DETAIL)
             }
 
             // Le decimos su adapter
@@ -129,6 +130,10 @@ class DishesActivity : AppCompatActivity() {
         if (resultCode == DishesDetailActivity.NO_ADD_MORE) {
             setResult(resultCode,data)
             finish()
+        } else if (resultCode == DishesDetailActivity.ADD_MORE) {
+            // Mostramos un Toast indicando que tiene añadir mas
+            Toast.makeText(this,"Add more Dishes", Toast.LENGTH_SHORT).show()
+
         }
     }
 
