@@ -2,7 +2,9 @@ package pro.pedrosa.orderme.activities
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.DialogFragment
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,9 +13,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
-import android.widget.TextView
-import android.widget.Toast
-import android.widget.ViewSwitcher
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_dishes.*
 import org.json.JSONObject
 import pro.pedrosa.orderme.R
@@ -27,6 +27,9 @@ import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
 import pro.pedrosa.orderme.model.*
 import kotlin.collections.LinkedHashMap
+import android.widget.ArrayAdapter
+
+
 
 
 class DishesActivity : AppCompatActivity() {
@@ -82,10 +85,12 @@ class DishesActivity : AppCompatActivity() {
             }
 
             // Le decimos su adapter
-            dishes_recyclerview.adapter = adapter
+              dishes_recyclerview.adapter = adapter
 
            // dishList.adapter = DishRecyclerViewAdapter(value)
-            viewSwitcher.displayedChild = VIEW_INDEX.DISH.index
+             viewSwitcher.displayedChild = VIEW_INDEX.DISH.index
+
+
 
         }
     }
@@ -128,11 +133,11 @@ class DishesActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == DishesDetailActivity.NO_ADD_MORE) {
-            setResult(resultCode,data)
+            setResult(resultCode)
             finish()
         } else if (resultCode == DishesDetailActivity.ADD_MORE) {
             // Mostramos un Toast indicando que tiene añadir mas
-            Toast.makeText(this,"Add more Dishes", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, R.string.add_more_dishes, Toast.LENGTH_SHORT).show()
 
         }
     }
@@ -166,6 +171,7 @@ class DishesActivity : AppCompatActivity() {
                         .show()
             }
         }
+
     }
 
 
@@ -222,5 +228,7 @@ class DishesActivity : AppCompatActivity() {
             }
             return dishList
     }
+
+
 
 }

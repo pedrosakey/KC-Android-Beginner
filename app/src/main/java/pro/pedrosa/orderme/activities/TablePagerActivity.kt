@@ -97,7 +97,7 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
 
 
             }else if (resultCode == DishesDetailActivity.NO_ADD_MORE) {
-                Toast.makeText(this,data?.getStringExtra(DishesDetailActivity.EXTRA_RESULT_ADDED), Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.order_added, Toast.LENGTH_SHORT).show()
 
             }
             else if (resultCode == DishesActivity.ERR_DOWNLOAD) {

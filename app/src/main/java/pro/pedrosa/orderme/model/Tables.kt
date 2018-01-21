@@ -7,9 +7,9 @@ object Tables : Serializable{
 
     private var tables : List<Table> =
         listOf(
-        Table("Mesa 1", mutableListOf(Order(Dish("Ensalada con espinacas"),2))),
-        Table("Mesa 2",  mutableListOf(Order(Dish("Rabas"),2))),
-        Table("Mesa 3",  mutableListOf(Order(Dish("Ensalada mixta"),2))),
+        Table("Mesa 1", mutableListOf(Order(Dish("Ensalada con espinacas"),2, mutableListOf()))),
+        Table("Mesa 2",  mutableListOf(Order(Dish("Ración de rabas"),2, mutableListOf()))),
+        Table("Mesa 3",  mutableListOf(Order(Dish("Ensalada mixta"),2, mutableListOf()))),
         Table("Mesa 4")
         )
 

@@ -12,6 +12,9 @@ import pro.pedrosa.orderme.model.Dish
 import pro.pedrosa.orderme.model.Dishes
 import pro.pedrosa.orderme.model.Order
 import pro.pedrosa.orderme.model.Tables
+import android.content.DialogInterface
+
+
 
 class DishesDetailActivity : AppCompatActivity() {
 
@@ -36,6 +39,7 @@ class DishesDetailActivity : AppCompatActivity() {
     }
 
     var tableIndex: Int = 0
+    lateinit var dish : Dish
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -50,10 +54,10 @@ class DishesDetailActivity : AppCompatActivity() {
 
         // Mesa
         tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
-        
+
         // Mostramos los campos segun la posición
         var dishId = intent.getIntExtra(DISH_ID, 0)
-        var dish = Dishes.dishes[dishId]
+        dish = Dishes.dishes[dishId]
 
         var dishImage = findViewById<ImageView>(R.id.dish_image)
         var dishName = findViewById<TextView>(R.id.dish_name)
@@ -78,34 +82,32 @@ class DishesDetailActivity : AppCompatActivity() {
             AlertDialog.Builder(this@DishesDetailActivity)
                     .setMessage("Add more dishes?")
                     .setPositiveButton("YES", { dialog, _ ->
-                       // dialog.dismiss()
+                        // dialog.dismiss()
                         // Add more
-                        //Join orders
-                        var orderToJoin = mutableListOf(Order(dish,1))
-                        Tables[tableIndex]?.joinOrder(orderToJoin)
-
+                        // Join orders
+                        addOrder()
                         setResult(ADD_MORE)
                         finish()
                     })
                     .setNegativeButton("NO", { _, _ ->
-                        // StartAcivityForResult volver a las mesas
-
                         //Join orders
-                         var orderToJoin = mutableListOf(Order(dish,1))
-                         Tables[tableIndex]?.joinOrder(orderToJoin)
-
-                         val resultIntent = Intent()
-                         resultIntent.putExtra(EXTRA_RESULT_ADDED, "Dish Added")
-
-                         // Indicamos que resultIntent es lo que recibirá la actividad anterior
-                         setResult(NO_ADD_MORE, resultIntent)
-
-                         // Finalizamos esta actividad
+                         addOrder()
+                         setResult(NO_ADD_MORE)
                          finish()
 
                      }).show()
 
 
         }
+    }
+    fun addOrder() {
+        // Leer del input
+        var editText = findViewById<EditText>(R.id.edit_text)
+        var comment = editText.text.toString()
+        var orderToJoin = Order(dish,1)
+        if(comment.length > 0) {
+            orderToJoin.addComment(comment)
+        }
+        Tables[tableIndex]?.joinOrder(orderToJoin)
     }
 }

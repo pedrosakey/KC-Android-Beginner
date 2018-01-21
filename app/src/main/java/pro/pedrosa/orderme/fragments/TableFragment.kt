@@ -1,6 +1,7 @@
 package pro.pedrosa.orderme.fragments
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
@@ -18,6 +19,7 @@ import pro.pedrosa.orderme.activities.TablePagerActivity
 import pro.pedrosa.orderme.model.Dish
 import pro.pedrosa.orderme.model.Order
 import pro.pedrosa.orderme.model.Table
+import pro.pedrosa.orderme.model.Tables
 
 class TableFragment : Fragment() {
 
@@ -60,7 +62,8 @@ class TableFragment : Fragment() {
 
            this.setTables()
 
-            // Nos han pulsado el boton
+            // Nos han pulsado el boton. Pasarlo a la actividad
+
             val button = root.findViewById<Button>(R.id.button)
             button.setOnClickListener {
                 onClickAddButtonListenener?.onClickAddButton(table)
@@ -72,8 +75,6 @@ class TableFragment : Fragment() {
 
         }
 
-
-
         return root
     }
 
@@ -82,6 +83,31 @@ class TableFragment : Fragment() {
         val adapter = ArrayAdapter<Order>(activity, android.R.layout.simple_list_item_1, table?.order?.toTypedArray())
         adapter.notifyDataSetChanged()
         list.adapter = adapter
+
+        // Nos enteramos de que se ha pulsado un elemento de la lista así:
+        list.setOnItemClickListener { parent, view, position, id ->
+            // Aviso al listener
+            var dishClientOrder : Order? = table?.order?.get(position)
+
+
+            val arrayAdapter = ArrayAdapter<String>(root.context, android.R.layout.simple_list_item_1, dishClientOrder?.dishComments)
+
+
+                    if (dishClientOrder!!.dishComments!!.isEmpty()) {
+                        AlertDialog.Builder(root.context)
+                                .setTitle("Client Comments")
+                                .setMessage("No comments")
+                                .setPositiveButton("OK", { dialog, _ -> })
+                                .show()
+                    } else {
+                        AlertDialog.Builder(root.context)
+                                .setTitle("Client Comments")
+                                .setAdapter(arrayAdapter) { dialog, _ -> }
+                                .setPositiveButton("OK", { dialog, _ -> })
+                                .show()
+                    }
+
+        }
 
     }
 

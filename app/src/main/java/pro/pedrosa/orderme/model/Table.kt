@@ -8,22 +8,23 @@ data class Table (var name: String, var order: MutableList<Order>) : Serializabl
 
     override fun toString() = name
 
-    fun joinOrder (orderTojoin: MutableList<Order>){
+    fun joinOrder (orderTojoin:Order){
 
-        // Copruebo si existe sino lo añado
-        if(order.contains(orderTojoin[0])){
-           var iOrder = order.indexOf(orderTojoin[0])
-            var oNumber = orderTojoin[0].number
+        // Compruebo si existe sino lo añado
+        if(order.contains(orderTojoin)){
+           var iOrder = order.indexOf(orderTojoin)
+            var oNumber = orderTojoin.number
 
             var orderOriginal = order.get(iOrder)
             orderOriginal.number = orderOriginal.number + oNumber
+            orderOriginal.joinComments(orderTojoin)
 
             // Delete & insert
             order.removeAt(iOrder)
             order.add(iOrder, orderOriginal)
 
         } else {
-            order.add(orderTojoin[0])
+            order.add(orderTojoin)
         }
 
 
