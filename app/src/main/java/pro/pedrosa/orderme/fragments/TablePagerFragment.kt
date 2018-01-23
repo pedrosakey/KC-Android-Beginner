@@ -1,5 +1,6 @@
 package pro.pedrosa.orderme.fragments
 
+import android.app.Activity
 import android.app.Fragment
 import android.content.Context
 import android.os.Bundle
@@ -15,14 +16,8 @@ import android.support.v4.view.PagerAdapter.POSITION_NONE
 import android.support.v4.view.PagerAdapter.POSITION_NONE
 import android.support.v4.view.PagerAdapter.POSITION_NONE
 import android.support.v4.view.PagerAdapter.POSITION_NONE
-
-
-
-
-
-
-
-
+import pro.pedrosa.orderme.activities.PayActivity
+import pro.pedrosa.orderme.activities.TablePagerActivity
 
 
 class TablePagerFragment : Fragment() {
@@ -45,6 +40,7 @@ class TablePagerFragment : Fragment() {
     val pager by lazy { root.findViewById<ViewPager>(R.id.view_pager) }
 
     private var initialTableIndex = 0
+    private var onClickPay : OnClickPay? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -108,6 +104,10 @@ class TablePagerFragment : Fragment() {
             pager.currentItem++
             true
         }
+        R.id.pay -> {
+            onClickPay?.onClickPay()
+            true
+        }
         else -> super.onOptionsItemSelected(item)
     }
 
@@ -139,6 +139,28 @@ class TablePagerFragment : Fragment() {
     fun getPosition() = pager.currentItem
 
     fun updateTableFragment() = pager.adapter.notifyDataSetChanged()
+
+    interface OnClickPay {
+        fun onClickPay () {}
+    }
+
+    @Suppress("OverridingDeprecatedMember", "DEPRECATION")
+    override fun onAttach(activity: Activity?) {
+        super.onAttach(activity)
+        commonAttach(activity)
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        onClickPay  = null
+    }
+
+    fun commonAttach(listener: Any?) {
+        if (listener is OnClickPay) {
+            onClickPay  = listener
+        }
+    }
+
 
 
 

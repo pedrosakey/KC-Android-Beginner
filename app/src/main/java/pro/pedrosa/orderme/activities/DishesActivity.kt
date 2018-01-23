@@ -110,6 +110,8 @@ class DishesActivity : AppCompatActivity() {
         toolbar.setTitle("Add Dishes")
         setSupportActionBar(toolbar)
 
+
+
         // Accedemos al RecyclerView
         dishList = findViewById(R.id.dishes_recyclerview)
 

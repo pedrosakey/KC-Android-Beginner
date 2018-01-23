@@ -2,10 +2,9 @@ package pro.pedrosa.orderme.fragments
 
 import android.app.Activity
 import android.app.AlertDialog
-import android.content.Context
-import android.net.Uri
-import android.os.Bundle
 import android.app.Fragment
+import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,13 +12,9 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ListView
 import android.widget.TextView
-
 import pro.pedrosa.orderme.R
-import pro.pedrosa.orderme.activities.TablePagerActivity
-import pro.pedrosa.orderme.model.Dish
 import pro.pedrosa.orderme.model.Order
 import pro.pedrosa.orderme.model.Table
-import pro.pedrosa.orderme.model.Tables
 
 class TableFragment : Fragment() {
 

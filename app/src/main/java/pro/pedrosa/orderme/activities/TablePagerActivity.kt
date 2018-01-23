@@ -28,12 +28,14 @@ import pro.pedrosa.orderme.model.Order
 import pro.pedrosa.orderme.model.Table
 import pro.pedrosa.orderme.model.Tables
 
-class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonListenener{
+class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonListenener,
+                                                TablePagerFragment.OnClickPay{
 
 
     companion object {
         val EXTRA_TABLE_INDEX = "EXTRA_TABLE_INDEX"
         private val REQUEST_CODE_DISHES = 1
+        private val REQUEST_CODE_PAY = 12
 
 
         fun intent(context: Context, tableIndex: Int) : Intent {
@@ -56,11 +58,11 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
         setSupportActionBar(toolbar)
 
 
+
         //Parametro de la mesa a mostrar
         tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
 
         // Cargamos el fragmento
-
         if(fragmentManager.findFragmentById(R.id.fragment_table_pager) == null) {
             val fragment = TablePagerFragment.newInstance(tableIndex)
             fragmentManager.beginTransaction()
@@ -109,17 +111,31 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
 
 
             }
+        } else if (requestCode == REQUEST_CODE_PAY) {
+            if (resultCode == Activity.RESULT_OK) {
+                Snackbar.make(findViewById(android.R.id.content)
+                        , "Ready, waiting for new order" , Snackbar.LENGTH_LONG)
+                        .show()
+
+
+            }
+
         }
-
-
-
-
-
     }
 
-    override fun onPause() {
-        super.onPause()
-        Log.v("TAG", "TablePagerActivity: onPause")
+    override fun onClickPay() {
+
+        val fragmentPager = fragmentManager.findFragmentById(R.id.fragment_table_pager) as? TablePagerFragment
+        if (fragmentPager != null) {
+            if(Tables[fragmentPager.getPosition()].order.isEmpty()){
+                Snackbar.make(findViewById(android.R.id.content)
+                        , "No Order. Add dishes" , Snackbar.LENGTH_LONG)
+                        .show()
+
+            } else {
+                startActivityForResult(PayActivity.intent(this, fragmentPager.getPosition()), REQUEST_CODE_PAY)
+            }
+        }
 
     }
 

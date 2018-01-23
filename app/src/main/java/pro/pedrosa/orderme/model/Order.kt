@@ -27,4 +27,8 @@ data class Order (val dish: Dish, var number: Int, var dishComments: MutableList
         }
 
     }
+
+    fun orderPrice () : String =
+        "Price: " + dish.price + " x"+ number + "....." + dish.price!!*number
+
 }

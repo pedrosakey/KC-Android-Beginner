@@ -26,7 +26,16 @@ data class Table (var name: String, var order: MutableList<Order>) : Serializabl
         } else {
             order.add(orderTojoin)
         }
+    }
 
+    //TODO Que devuelva precios con decimales
+    fun priceOrder () : Int {
+        var totalPrice : Int = 0
+        order.forEach {totalPrice += it.dish.price!! * it.number}
+        return totalPrice
+    }
 
+    fun restart() {
+        order = mutableListOf()
     }
 }
