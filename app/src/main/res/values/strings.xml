@@ -8,6 +8,8 @@
     <string name="next">Siguiente</string>
     <string name="add_dishes_button">Add</string>
     <string name="dish_image_view_description">Dish Image View</string>
-    <string name="order_added">Order Added</string>
+    <string name="order_added">Dishes Added</string>
     <string name="add_more_dishes">Add more Dishes</string>
+    <string name="toolbar_dishes_activity_title">Dish to Order</string>
+    <string name="toolbar_tittle_pay_activity">Pay</string>
 </resources>

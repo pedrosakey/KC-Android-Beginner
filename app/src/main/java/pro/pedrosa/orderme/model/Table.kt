@@ -12,10 +12,10 @@ data class Table (var name: String, var order: MutableList<Order>) : Serializabl
 
         // Compruebo si existe sino lo añado
         if(order.contains(orderTojoin)){
-           var iOrder = order.indexOf(orderTojoin)
-            var oNumber = orderTojoin.number
+           val iOrder = order.indexOf(orderTojoin)
+            val oNumber = orderTojoin.number
 
-            var orderOriginal = order.get(iOrder)
+            val orderOriginal = order.get(iOrder)
             orderOriginal.number = orderOriginal.number + oNumber
             orderOriginal.joinComments(orderTojoin)
 
@@ -28,9 +28,9 @@ data class Table (var name: String, var order: MutableList<Order>) : Serializabl
         }
     }
 
-    //TODO Que devuelva precios con decimales
+    //TODO Que devuelva precios con decimales y price no puede ser nunca null
     fun priceOrder () : Int {
-        var totalPrice : Int = 0
+        var totalPrice = 0
         order.forEach {totalPrice += it.dish.price!! * it.number}
         return totalPrice
     }

@@ -21,10 +21,9 @@ class TablesActivity : AppCompatActivity(), TableListFragment.OnTableSelectedLis
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
-        var bundle : Bundle? = null
+        val bundle : Bundle? = null
         super.onCreate(bundle)
 
-        Log.v("TAG", "TablesActivity me creo")
 
         setContentView(R.layout.activity_tables)
 
@@ -60,11 +59,5 @@ class TablesActivity : AppCompatActivity(), TableListFragment.OnTableSelectedLis
             tablePagerFragment.moveToTable(position)
         }
     }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.v("TAG", "TablesActivity me destruyo")
-    }
-
 
 }

@@ -8,7 +8,6 @@ import pro.pedrosa.orderme.model.Dish
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import org.intellij.lang.annotations.JdkConstants
 import pro.pedrosa.orderme.R
 
 

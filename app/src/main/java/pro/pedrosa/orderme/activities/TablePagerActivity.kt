@@ -1,35 +1,19 @@
 package pro.pedrosa.orderme.activities
 
 import android.app.Activity
-import android.app.Fragment
 import android.content.Context
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
-import android.support.v13.app.FragmentPagerAdapter
-import android.support.v4.view.ViewPager
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
-import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Button
 import android.widget.Toast
-import kotlinx.android.synthetic.*
 import pro.pedrosa.orderme.R
-import pro.pedrosa.orderme.fragments.TableFragment
-import pro.pedrosa.orderme.fragments.TableListFragment
 import pro.pedrosa.orderme.fragments.TablePagerFragment
-import pro.pedrosa.orderme.model.Dish
-import pro.pedrosa.orderme.model.Order
-import pro.pedrosa.orderme.model.Table
 import pro.pedrosa.orderme.model.Tables
 
-class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonListenener,
-                                                TablePagerFragment.OnClickPay{
+class TablePagerActivity : AppCompatActivity(), TablePagerFragment.OnClickPay{
 
 
     companion object {
@@ -71,14 +55,15 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
 
         }
 
+        // Click en el boton
+        val addButton = findViewById<Button>(R.id.button_add)
+        addButton.setOnClickListener {
+            //Obtengo la referencia la fragmento y le paso la posicion
+            val fragmentPager = fragmentManager.findFragmentById(R.id.fragment_table_pager) as? TablePagerFragment
+            if (fragmentPager != null) {
+                startActivityForResult(DishesActivity.intent(this,fragmentPager.getPosition()), REQUEST_CODE_DISHES)
+            }
 
-    }
-
-    override fun onClickAddButton(table: Table? ) {
-        //Obtengo la referencia la fragmento y le paso la posicion
-        val fragmentPager = fragmentManager.findFragmentById(R.id.fragment_table_pager) as? TablePagerFragment
-        if (fragmentPager != null) {
-            startActivityForResult(DishesActivity.intent(this,fragmentPager.getPosition()), REQUEST_CODE_DISHES)
         }
 
 
@@ -114,7 +99,7 @@ class TablePagerActivity : AppCompatActivity(), TableFragment.OnClickAddButtonLi
         } else if (requestCode == REQUEST_CODE_PAY) {
             if (resultCode == Activity.RESULT_OK) {
                 Snackbar.make(findViewById(android.R.id.content)
-                        , "Ready, waiting for new order" , Snackbar.LENGTH_LONG)
+                        , "Ready, waiting for new  order" , Snackbar.LENGTH_LONG)
                         .show()
 
 

@@ -5,11 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import kotlinx.android.synthetic.main.content_allergen.view.*
 import pro.pedrosa.orderme.R
 
 
-class AllergenRecyclerViewAdapter (val allergen: List<Int>): RecyclerView.Adapter<AllergenRecyclerViewAdapter.AllergenViewHolder>() {
+class AllergenRecyclerViewAdapter (private val allergen: List<Int>): RecyclerView.Adapter<AllergenRecyclerViewAdapter.AllergenViewHolder>() {
     override fun onBindViewHolder(holder: AllergenViewHolder?, position: Int) {
         holder?.bindAllergen(allergen[position])
     }
@@ -26,7 +25,6 @@ class AllergenRecyclerViewAdapter (val allergen: List<Int>): RecyclerView.Adapte
 
         fun bindAllergen(allergen: Int) {
             // Accedemos al contexto
-            val context = itemView.context
             val allergenImage = itemView.findViewById<ImageView>(R.id.allergen_image)
             //V -> M
             allergenImage.setImageResource(allergen)

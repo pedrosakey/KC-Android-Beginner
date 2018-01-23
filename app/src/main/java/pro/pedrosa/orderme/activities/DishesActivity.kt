@@ -1,35 +1,29 @@
 package pro.pedrosa.orderme.activities
 
-import android.app.Activity
 import android.app.AlertDialog
-import android.app.DialogFragment
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.View
-import android.widget.*
+import android.widget.Toast
+import android.widget.ViewSwitcher
 import kotlinx.android.synthetic.main.activity_dishes.*
-import org.json.JSONObject
-import pro.pedrosa.orderme.R
-import pro.pedrosa.orderme.adapter.DishRecyclerViewAdapter
-import pro.pedrosa.orderme.fragments.TableFragment
-import java.net.URL
-import java.util.*
 import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
 import org.jetbrains.anko.coroutines.experimental.bg
-import pro.pedrosa.orderme.model.*
-import kotlin.collections.LinkedHashMap
-import android.widget.ArrayAdapter
-
-
+import org.json.JSONObject
+import pro.pedrosa.orderme.R
+import pro.pedrosa.orderme.adapter.DishRecyclerViewAdapter
+import pro.pedrosa.orderme.model.Dish
+import pro.pedrosa.orderme.model.Dishes
+import java.net.URL
+import java.util.*
 
 
 class DishesActivity : AppCompatActivity() {
@@ -46,7 +40,6 @@ class DishesActivity : AppCompatActivity() {
         //Codes
         private val REQUEST_CODE_DISHES_DETAIL = 2
         val ERR_DOWNLOAD = 5
-        lateinit var dishCache: List<Dish>
 
 
         fun intent(context: Context, tableIndex: Int) : Intent {
@@ -61,7 +54,6 @@ class DishesActivity : AppCompatActivity() {
     lateinit var viewSwitcher: ViewSwitcher
 
 
-    var dishSelected : List<Dish>? = null
     var dishes : List<Dish>? = null
     set(value){
         field = value
@@ -75,10 +67,7 @@ class DishesActivity : AppCompatActivity() {
             adapter.onClickListener = View.OnClickListener { view ->
                 // Averiguamos qué índice del ViewHolder es el que ha provocado esta llamada
                 val position = dishes_recyclerview.getChildAdapterPosition(view)
-
-                    var dish = dishes?.get(position)
-                    var dishId = dish?.id ?: 0
-                // Pasamos la posicion mejorar con Id
+                // TODO Pasamos la posicion mejorar con Id
                 // Añadimos el plato y si resultado OK añadimos mas / pasamos la mesa
                 val tableIndex = intent.getIntExtra(EXTRA_TABLE_INDEX,0)
                     startActivityForResult(DishesDetailActivity.intent(this, position, tableIndex ), REQUEST_CODE_DISHES_DETAIL)
@@ -87,10 +76,7 @@ class DishesActivity : AppCompatActivity() {
             // Le decimos su adapter
               dishes_recyclerview.adapter = adapter
 
-           // dishList.adapter = DishRecyclerViewAdapter(value)
              viewSwitcher.displayedChild = VIEW_INDEX.DISH.index
-
-
 
         }
     }
@@ -110,8 +96,6 @@ class DishesActivity : AppCompatActivity() {
         toolbar.setTitle("Add Dishes")
         setSupportActionBar(toolbar)
 
-
-
         // Accedemos al RecyclerView
         dishList = findViewById(R.id.dishes_recyclerview)
 
@@ -125,7 +109,6 @@ class DishesActivity : AppCompatActivity() {
         // set(value)
 
         // Le decimos cuando pulsamos un elemento del adapter
-
 
         updateDishes()
 
@@ -156,7 +139,7 @@ class DishesActivity : AppCompatActivity() {
 
             } catch (ex : Exception) {
                 ex.printStackTrace()
-                var resultIntent = Intent()
+                val resultIntent = Intent()
                 resultIntent.putExtra(EXTRA_ERR_MSG, ex.localizedMessage)
                 // Ha habido algún tipo de error, se lo decimos al usuario con un diálogo
                 AlertDialog.Builder(this@DishesActivity)
@@ -176,8 +159,6 @@ class DishesActivity : AppCompatActivity() {
 
     }
 
-
-
     // Descargamos datos de los platos
     @Throws(Exception::class)
     private fun downloadDishes() : List<Dish> {
@@ -196,15 +177,14 @@ class DishesActivity : AppCompatActivity() {
 
             for (dishIndex in 0 until list.length()) {
                 val dish = list.getJSONObject(dishIndex)
-                val id = dish.getInt("id").toInt()
+                val id = dish.getInt("id")
                 val name = dish.getString("name").toString()
                 val description = dish.get("description").toString()
-                val price = dish.getInt("price").toInt()
-                val image = dish.getString("image").toString()
+                val price = dish.getInt("price")
 
                 val allergens = dish.getJSONArray("allergens")
 
-                var allergenToList = mutableListOf<String>()
+                val allergenToList = mutableListOf<String>()
 
                 for( i in 0..(allergens.length() - 1) ) {
                     val a = allergens.get(i)

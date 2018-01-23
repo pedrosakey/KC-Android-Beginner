@@ -2,22 +2,14 @@ package pro.pedrosa.orderme.fragments
 
 import android.app.Activity
 import android.app.Fragment
-import android.content.Context
 import android.os.Bundle
 import android.support.v13.app.FragmentPagerAdapter
-import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.*
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.model.Tables
-import android.support.v4.view.PagerAdapter.POSITION_NONE
-import android.support.v4.view.PagerAdapter.POSITION_NONE
-import android.support.v4.view.PagerAdapter.POSITION_NONE
-import android.support.v4.view.PagerAdapter.POSITION_NONE
-import pro.pedrosa.orderme.activities.PayActivity
-import pro.pedrosa.orderme.activities.TablePagerActivity
 
 
 class TablePagerFragment : Fragment() {

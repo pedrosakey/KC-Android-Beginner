@@ -1,17 +1,13 @@
 package pro.pedrosa.orderme.fragments
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.Fragment
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.Button
 import android.widget.ListView
-import android.widget.TextView
 import pro.pedrosa.orderme.R
 import pro.pedrosa.orderme.model.Order
 import pro.pedrosa.orderme.model.Table
@@ -31,7 +27,6 @@ class TableFragment : Fragment() {
         }
     }
 
-    var onClickAddButtonListenener: OnClickAddButtonListenener? = null
 
     lateinit var root: View
     var table : Table? = null
@@ -52,20 +47,8 @@ class TableFragment : Fragment() {
         if (inflater != null) {
 
             root = inflater.inflate(R.layout.fragment_table, container, false)
-            val tableName = root.findViewById<TextView>(R.id.table_name)
-            tableName.text = table?.name
 
            this.setTables()
-
-            // Nos han pulsado el boton. Pasarlo a la actividad
-
-            val button = root.findViewById<Button>(R.id.button)
-            button.setOnClickListener {
-                onClickAddButtonListenener?.onClickAddButton(table)
-//                val adapter = ArrayAdapter<Order>(activity, android.R.layout.simple_list_item_1, table?.order?.toTypedArray())
-//                list.adapter = adapter
-            }
-
 
 
         }
@@ -82,7 +65,7 @@ class TableFragment : Fragment() {
         // Nos enteramos de que se ha pulsado un elemento de la lista así:
         list.setOnItemClickListener { parent, view, position, id ->
             // Aviso al listener
-            var dishClientOrder : Order? = table?.order?.get(position)
+            val dishClientOrder : Order? = table?.order?.get(position)
 
 
             val arrayAdapter = ArrayAdapter<String>(root.context, android.R.layout.simple_list_item_1, dishClientOrder?.dishComments)
@@ -105,41 +88,5 @@ class TableFragment : Fragment() {
         }
 
     }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        commonOnAttach(context)
-    }
-
-    override fun onAttach(activity: Activity?) {
-        super.onAttach(activity)
-        commonOnAttach(activity)
-    }
-
-    fun commonOnAttach(context: Context?) {
-        // Aquí nos llaman cuando el fragment "se engancha" a la actividad, y por tanto ya pertence a ella
-        // Lo que vamos a hacer es quedarnos con la referencia a esa actividad para cuando tengamos que avisarle de "cosas"
-        if (context is OnClickAddButtonListenener) {
-            onClickAddButtonListenener = context
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-
-        // Si la actividad se "desengancha" de este fragment ya no tiene sentido guardar una referencia a ella, ya no le vamos
-        // a avisar de nada, lo ponemos a null
-        onClickAddButtonListenener = null
-    }
-
-    interface OnClickAddButtonListenener {
-        fun onClickAddButton(table: Table?)
-    }
-
-
-
-
-
-
 
 }
